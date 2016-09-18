@@ -5,6 +5,12 @@
 }
 
 
+body{
+	padding: 20px;
+	background-color: orange;
+}
+
+
 h1{
 	text-align: center;
 	padding: 10px;
@@ -14,10 +20,29 @@ h1{
 
 table{
 	border: 1px solid green;
-	width: 500px;
-	height: 500px;
 	margin: auto;
-	margin-top: 20px;
+	background-color: black;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+tr{
+	height: 10px;
+	width: 10px;
+}
+
+td{
+	border: 1px solid white;
+	height: 20px;
+	width: 20px;
+}
+
+td.dead{
+	background-color: transparent;
+}
+
+td.alive{
+	background-color: green;
 }
 
 .controls{
