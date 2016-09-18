@@ -1,0 +1,26 @@
+*{
+	margin: 0;
+	padding:0;
+
+}
+
+
+h1{
+	text-align: center;
+	padding: 10px;
+	color: green;
+}
+
+
+table{
+	border: 1px solid green;
+	width: 500px;
+	height: 500px;
+	margin: auto;
+	margin-top: 20px;
+}
+
+.controls{
+	text-align: center;
+	margin-top: 10px;
+}
