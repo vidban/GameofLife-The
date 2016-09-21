@@ -49,3 +49,7 @@ td.alive{
 	text-align: center;
 	margin-top: 10px;
 }
+
+button{
+	padding: 2px;
+}

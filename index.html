@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>The Game of Life</title>
 	<link rel="stylesheet" href="css/style.css">
+	<script src="js/jquery-1.10.2.js"></script>
 </head>
 <body>
 	<h1>The game of life</h1>
@@ -12,8 +13,9 @@
 		</table>
 	</div>
 	<div class="controls">
-		<button id="start">Start</button>
-		<button id="clear">Clear</button>
+		<button id="start" onclick = "controller.startButtonHandler(this)">Start</button>
+		<button id="clear" onclick = "controller.clearButtonHandler(this)">Clear</button>
+		<button id="random">Random</button>
 	</div>
 	
 <script src= "js/app.js"></script>
