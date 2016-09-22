@@ -35,15 +35,6 @@ var model = {
 		}
 	},
 
-
-	pauseGame: function(){
-		this.playing = false;
-	},
-
-	continueGame: function(){
-		this.playing = true;
-	},
-
 	// to manually change cell to live or dead
 	manuallyChangeState: function(row, col, cName){
 		if (cName == 'dead'){
@@ -53,26 +44,59 @@ var model = {
 		}
 	},
 
+	
 	//starts game
 	startGame: function() {
-		this.playing = true;
+
 		for (var i=0; i<this.rows; i++){
 			for (var j = 0; j<this.cols; j++){
 				console.log('game started');
 				this.applyRules(i,j);
 			}
 		}
-		this.copyAndResetGrid();
+		//copyAndResetGrid;
+		for (var i=0; i<this.rows; i++){
+			for (var j = 0; j<this.cols; j++){
+				this.grid1[i][j] = this.grid2[i][j];
+				this.grid2[i][j] = 0;
+			}
+		}
 
+		//stop game if grid is empty
+		var c=0;
+		for (var i=0; i<this.rows; i++){
+			for (var j = 0; j<this.cols; j++){
+				if (this.grid1[i][j] == 0){
+					c++;
+				}
+			}
+		}
+		console.log(c);
+
+		if (c == this.rows*this.cols){
+			clearTimeout(this.timer);
+			controller.clearButtonHandler();
+			return;
+		}
+
+
+		//update view
 		for (var i=0; i<this.rows; i++){
 			for (var j = 0; j<this.cols; j++){
 				var cellId = i+ "_" + j;
 				view.updateView(this.grid1[i][j], cellId);
 				
 			}
-		}
+		}																																	
+	
 
 
+		this.timer = setTimeout((this.startGame).bind(this), 500);
+
+	},
+
+	pauseGame: function(){
+		clearTimeout(this.timer);
 	},
 
 
@@ -129,28 +153,17 @@ var model = {
 	    }
 	    return count;
 
-	},
-
-	// after one turn, copies new grid to current grid and resets new grid
-	copyAndResetGrid: function(){
-		for (var i=0; i<this.rows; i++){
-			for (var j = 0; j<this.cols; j++){
-				this.grid1[i][j] = this.grid2[i][j];
-				this.grid2[i][j] = 0;
-			}
-		}
 	}
 
 
 
-};		// view.drawGrid();
-		// model.initializeGrid;
-
+};		
 
 var controller = {
 
 	// controls state of game play based on start button click
 	startButtonHandler: function(self){
+		var timer;
 		var whatItSays = self.innerHTML;
 		if (whatItSays == 'Start'){
 			self.innerHTML = 'Pause';
@@ -160,9 +173,14 @@ var controller = {
 			model.pauseGame();
 		} else {
 			self.innerHTML = 'Pause';
-			model.continueGame();
+			model.startGame();
 		}
 
+	},
+
+	//Starts a new game
+	newGame: function(){
+		view.drawGrid();
 	},
 
 	//clears and initializes a new  grid on pressing the clear button
@@ -170,7 +188,6 @@ var controller = {
 		// view.drawGrid();
 		// model.initializeGrid;
 		model.resetGrid();
-
 		document.getElementById('start').innerHTML = 'Start Again?';
 
 	}
@@ -237,4 +254,4 @@ var view = {
 
 };
 
-view.drawGrid();
+controller.newGame();
