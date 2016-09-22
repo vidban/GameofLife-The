@@ -71,7 +71,6 @@ var model = {
 				}
 			}
 		}
-		console.log(c);
 
 		if (c == this.rows*this.cols){
 			clearTimeout(this.timer);
@@ -91,7 +90,7 @@ var model = {
 	
 
 
-		this.timer = setTimeout((this.startGame).bind(this), 500);
+		this.timer = setTimeout((this.startGame).bind(this), 100);
 
 	},
 
@@ -153,6 +152,19 @@ var model = {
 	    }
 	    return count;
 
+	},
+
+	randomPattern: function(){
+		var r;
+		var cellID;
+		for (var i=0; i<this.rows; i++){
+			for (var j=0; j<this.cols; j++){
+				r = Math.floor(Math.random()*2);
+				cellId = i+ "_" + j;
+				this.grid1[i][j] = r;
+				view.updateView(r, cellId);
+			}
+		}
 	}
 
 
@@ -185,11 +197,13 @@ var controller = {
 
 	//clears and initializes a new  grid on pressing the clear button
 	clearButtonHandler: function(){
-		// view.drawGrid();
-		// model.initializeGrid;
 		model.resetGrid();
 		document.getElementById('start').innerHTML = 'Start Again?';
 
+	},
+
+	generateRandomPattern: function() {
+		model.randomPattern();
 	}
 
 };
@@ -207,8 +221,8 @@ var view = {
 			return;
 		}
 
-		var rows = 25;
-		var cols = 25;
+		var rows = 30;
+		var cols = 30;
 		model.initializeGridSize(rows,cols);
 
 		var tableString= "";
