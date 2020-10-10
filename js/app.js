@@ -1,4 +1,4 @@
-var model = {
+const model = {
 
 	initializeGridSize: function(rows,cols){
 		this.rows = rows;
@@ -11,13 +11,13 @@ var model = {
 	
 	// initializes 2 grid arrays for game play
 	initializeGrid: function(){
-		for (var i=0; i<this.rows; i++){
+		for (let i=0; i<this.rows; i++){
 			this.grid1[i] = new Array(this.cols);
 			this.grid2[i] = new Array(this.cols);
 		}
 
-		for (var k =0; k<this.rows; k++){
-			for (var i=0; i<this.cols; i++){
+		for (let k =0; k<this.rows; k++){
+			for (let i=0; i<this.cols; i++){
 				this.grid1[k][i] = 0;
 				this.grid2[k][i] = 0;
 			}
@@ -26,10 +26,11 @@ var model = {
 
 	// resets both the grids at beginning of game play
 	resetGrid: function(){
-		for (var k =0; k<this.rows; k++){
-			for (var i=0; i<this.cols; i++){
+		for (let k =0; k<this.rows; k++){
+			let cellId;
+			for (let i=0; i<this.cols; i++){
 				this.grid1[k][i] = 0;
-				var cellId = k+ "_" + i;
+				cellId = k+ "_" + i;
 				view.updateView(this.grid1[k][i], cellId);
 			}
 		}
@@ -37,35 +38,32 @@ var model = {
 
 	// to manually change cell to live or dead
 	manuallyChangeState: function(row, col, cName){
-		if (cName == 'dead'){
-			this.grid1[row][col] = 0;
-		}else {
-			this.grid1[row][col] = 1;
-		}
+		cName == 'dead' 
+		? this.grid1[row][col] = 0
+		: this.grid1[row][col] = 1;
 	},
 
 	
 	//starts game
 	startGame: function() {
 
-		for (var i=0; i<this.rows; i++){
-			for (var j = 0; j<this.cols; j++){
-				console.log('game started');
+		for (let i=0; i<this.rows; i++){
+			for (let j = 0; j<this.cols; j++){
 				this.applyRules(i,j);
 			}
 		}
 		//copyAndResetGrid;
-		for (var i=0; i<this.rows; i++){
-			for (var j = 0; j<this.cols; j++){
+		for (let i=0; i<this.rows; i++){
+			for (let j = 0; j<this.cols; j++){
 				this.grid1[i][j] = this.grid2[i][j];
 				this.grid2[i][j] = 0;
 			}
 		}
 
 		//stop game if grid is empty
-		var c=0;
-		for (var i=0; i<this.rows; i++){
-			for (var j = 0; j<this.cols; j++){
+		let c=0;
+		for (let i=0; i<this.rows; i++){
+			for (let j = 0; j<this.cols; j++){
 				if (this.grid1[i][j] == 0){
 					c++;
 				}
@@ -80,9 +78,10 @@ var model = {
 
 
 		//update view
-		for (var i=0; i<this.rows; i++){
-			for (var j = 0; j<this.cols; j++){
-				var cellId = i+ "_" + j;
+		for (let i=0; i<this.rows; i++){
+			let cellId;
+			for (let j = 0; j<this.cols; j++){
+				cellId = i+ "_" + j;
 				view.updateView(this.grid1[i][j], cellId);
 				
 			}
@@ -105,7 +104,7 @@ var model = {
 	// Any live cell with more than three live neighbours dies, as if by overcrowding.
 	// Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 	applyRules: function(row,col) {
-		var numNeighbors = this.countNeighbors(row,col);
+		const numNeighbors = this.countNeighbors(row,col);
 		 if (this.grid1[row][col] == 1) {
 	        if (numNeighbors < 2) {
 	            this.grid2[row][col] = 0;
@@ -125,7 +124,7 @@ var model = {
 
 	// count the neighbors of the cell that are alive
 	countNeighbors: function(row,col){
-		var count = 0;
+		let count = 0;
 		if (row-1 >= 0){
 			if (this.grid1[row-1][col] == 1) count++;
 		}
@@ -155,8 +154,8 @@ var model = {
 	},
 
 	randomPattern: function(){
-		var r;
-		var cellID;
+		let r;
+		let cellID;
 		for (var i=0; i<this.rows; i++){
 			for (var j=0; j<this.cols; j++){
 				r = Math.floor(Math.random()*2);
@@ -171,12 +170,11 @@ var model = {
 
 };		
 
-var controller = {
+const controller = {
 
 	// controls state of game play based on start button click
 	startButtonHandler: function(self){
-		var timer;
-		var whatItSays = self.innerHTML;
+		const whatItSays = self.innerHTML;
 		if (whatItSays == 'Start'){
 			self.innerHTML = 'Pause';
 			model.startGame();
@@ -208,11 +206,11 @@ var controller = {
 
 };
 
-var view = {
+const view = {
 
 	// draws the grid on screen
 	drawGrid: function(){
-		var cInfo = document.getElementById('tbl');
+		const cInfo = document.getElementById('tbl');
 		this.playing = false;
 
 		//throw error if table is not found
@@ -221,8 +219,8 @@ var view = {
 			return;
 		}
 
-		var rows = 30;
-		var cols = 30;
+		const rows = 30;
+		const cols = 30;
 		model.initializeGridSize(rows,cols);
 
 		var tableString= "";
@@ -247,12 +245,12 @@ var view = {
 	// controls manual cell clicks																							
 
 	cellClicked: function(self){
-		var rowcol = self.id.split("_");
-		var row = rowcol[0];
-		var col = rowcol[1];
+		const rowcol = self.id.split("_");
+		const row = rowcol[0];
+		const col = rowcol[1];
 
 		$(self).toggleClass('dead alive');
-		var cName = self.className;
+		const cName = self.className;
 		
 		model.manuallyChangeState(row,col,cName);
 	},
